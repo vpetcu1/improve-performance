@@ -4,8 +4,12 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
@@ -16,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class NumberService {
 
-    private static final int SAMPLE_SIZE = 100_000;
+	private static final int SAMPLE_SIZE = 100_000;
     private Random random = new Random();
 
     public Integer findSmallestDuplicate(List<Integer> data) {
@@ -41,7 +45,12 @@ public class NumberService {
 
     public Integer findSmallestDuplicateImproved(List<Integer> data) {
         
-        throw new UnsupportedOperationException("Not implemented.");
+    	Set<Integer> items = new HashSet();
+    	TreeSet<Integer> duplicates = data.stream()
+                .filter(n -> !items.add(n))
+                .collect(Collectors.toCollection(TreeSet::new));
+        return duplicates.pollFirst();
+
 
     }
 
